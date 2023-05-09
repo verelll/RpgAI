@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe7d30f6d4e14ca297bc5bd0a8b4b3ad, type: 3}
+  m_Name: MainAISettings
+  m_EditorClassIdentifier: 
+  aiPrefab: {fileID: 3688749745577597462, guid: 24c36e1b7eab7524a97e6aa81c883205,
+    type: 3}
+  presetSpawnList:
+  - {fileID: 11400000, guid: 266143af72cc7b348becf0d02ca47921, type: 2}
+  - {fileID: 11400000, guid: bd893333d96939444bf7044bee931e2f, type: 2}
+  - {fileID: 11400000, guid: ec4c57c6f16dd2f43b427bf0490d8253, type: 2}
