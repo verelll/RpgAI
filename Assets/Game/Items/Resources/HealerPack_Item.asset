@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4164f1f07bfd4b2d8454d209e060f85b, type: 3}
+  m_Name: HealerPack_Item
+  m_EditorClassIdentifier: 
+  itemType: 0
+  itemPrefab: {fileID: 6569428339586693855, guid: 513b05322845d1d41b5566c29b05140e,
+    type: 3}
+  spawnPositionOffset: {x: 0, y: 0.5, z: 0}
+  spawnRotationOffset: {x: 0, y: 0, z: 0}
