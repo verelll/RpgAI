@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0dd243c439e40dbb4d3ee71fa634dc1, type: 3}
   m_Name: MilitaryAI_Preset
   m_EditorClassIdentifier: 
-  mainMaterial: {fileID: 2100000, guid: 3818bc4ca497b6141944807b3e6c1954, type: 2}
+  color: {r: 0.9339623, g: 0.6567998, b: 0.030838395, a: 1}
   moveSpeed: 4
   angularSpeed: 240
   acceleration: 12

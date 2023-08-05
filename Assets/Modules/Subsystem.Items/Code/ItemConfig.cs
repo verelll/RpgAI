@@ -12,10 +12,15 @@ namespace Test.Items
         [Header("Main Settings")]
         public ItemType itemType;
 
-        public ItemBehaviour itemPrefab;
+        public ItemView itemPrefab;
+        public ItemEquippedView itemEquippedPrefab;
 
         public Vector3 spawnPositionOffset;
         public Vector3 spawnRotationOffset;
+
+        [Space] 
+        public Vector3 equipPositionOffset;
+        public Vector3 equipRotationOffset;
     }
 
     public enum ItemType

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe7d30f6d4e14ca297bc5bd0a8b4b3ad, type: 3}
   m_Name: MainAISettings
   m_EditorClassIdentifier: 
+  aiMaterial: {fileID: 2100000, guid: f4461ab659e84fe4489a8c280c7b99e2, type: 2}
   aiPrefab: {fileID: 3688749745577597462, guid: 24c36e1b7eab7524a97e6aa81c883205,
     type: 3}
   presetSpawnList:

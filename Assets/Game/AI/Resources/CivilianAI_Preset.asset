@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0dd243c439e40dbb4d3ee71fa634dc1, type: 3}
   m_Name: CivilianAI_Preset
   m_EditorClassIdentifier: 
-  mainMaterial: {fileID: 2100000, guid: 47eff6843554b6e46a58a8cfe666d219, type: 2}
+  color: {r: 0.086240634, g: 0.9622642, b: 0.18654391, a: 1}
   moveSpeed: 3.5
   angularSpeed: 120
   acceleration: 8

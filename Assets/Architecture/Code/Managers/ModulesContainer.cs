@@ -3,21 +3,17 @@ using System.Collections.Generic;
 
 namespace Test.Architecture
 {
-    public class ModulesContainer
+    public class ModulesContainer 
     {
-        private Dictionary<Type, IManager> _managers;
-
-        public void InitContainer()
-        {
-            _managers = new Dictionary<Type, IManager>();
-        }
-
+        private Dictionary<Type, ManagerBase> _managers;
+        
         public void InitManagers()
         {
+            _managers ??= new Dictionary<Type, ManagerBase>();
+            
             foreach (var pair in _managers)
             {
-                pair.Value.InitModulesContainer(this);
-                pair.Value.InitDependencyManagers();
+                Inject(pair.Value);
                 pair.Value.Init();
             }
         }
@@ -30,7 +26,7 @@ namespace Test.Architecture
             }
         }
 
-        public T AddManager<T>() where T : IManager, new()
+        public T AddManager<T>() where T : ManagerBase, new()
         {
             var newModule = new T();
             var type = newModule.GetType();
@@ -38,13 +34,19 @@ namespace Test.Architecture
             return newModule;
         }
 
-        public T GetManager<T>() where T : IManager
+        public T GetManager<T>() where T : ManagerBase
         {
             var type = typeof(T);
             if (!_managers.TryGetValue(type, out var module))
                 return default;
 
             return (T) module;
+        }
+        
+        public void Inject(IInjector injector)
+        {
+            injector.InitContainer(this);
+            injector.InitDependencyManagers();
         }
     }
 }

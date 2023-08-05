@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using Test.AI;
 using Test.Architecture;
+using Test.Cameras;
 using Test.Items;
 using UnityEngine;
 
@@ -13,14 +15,19 @@ namespace Test.Game
         private IEnumerator Start()
         {
             ModulesContainer = new ModulesContainer();
-            ModulesContainer.InitContainer();
 
+            ModulesContainer.AddManager<CameraManager>();
             ModulesContainer.AddManager<AIManager>();
             ModulesContainer.AddManager<ItemsManager>();
 
             yield return null;
 
             ModulesContainer.InitManagers();
+        }
+
+        private void OnDestroy()
+        {
+            ModulesContainer?.DisposeManagers();
         }
     }
 }

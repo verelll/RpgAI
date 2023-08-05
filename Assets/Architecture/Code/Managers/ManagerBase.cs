@@ -1,28 +1,13 @@
-﻿
-using UnityEngine;
-
-namespace Test.Architecture
+﻿namespace Test.Architecture
 {
-
-    public abstract class ManagerBase : IManager
+    public abstract class ManagerBase : Injector
     {
-        private ModulesContainer _modulesContainer;
-
-        public void InitModulesContainer(ModulesContainer modulesContainer)
+        public virtual void Init(){}
+        public virtual void Dispose(){}
+        
+        protected T GetManager<T>() where T : ManagerBase
         {
-            _modulesContainer = modulesContainer;
+             return  MContainer.GetManager<T>();
         }
-
-        public abstract void InitDependencyManagers();
-
-        protected T GetManager<T>() where T : IManager
-        {
-             var t = _modulesContainer.GetManager<T>();
-             return t;
-        }
-
-        public abstract void Init();
-
-        public abstract void Dispose();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using Test.AI;
-using Test.AI.States;
+using Test.AI.Neuro;
 using Test.Items;
 using UnityEngine;
 
@@ -13,49 +13,44 @@ namespace Test.Game
 
         [SerializeField, Header("Items Cheats")]
         private ItemConfig spawnedItem;
-
+        
         public static event Action<Vector3> OnMouseClick;
         
         private void Update()
         {
-            var aiManager = starter.ModulesContainer.GetManager<AIManager>();
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                foreach (var ai in aiManager.AIControllers)
-                {
-                    ai.AddState<PatrolState>(true);
-                    ai.AddState<MoveToMouseClickState>(true);
-                    ai.ActivateState<PatrolState>();
-                    ai.ActivateState<MoveToMouseClickState>();
-                }
-            }
-            
-            
-            //Move Click Point
-            if (Input.GetMouseButtonDown(0))
-            {
-                var clickPos = GetMouseClickPoint();
-                CreatedDebugPoint(clickPos);
-                OnMouseClick?.Invoke(clickPos);
-            }
+            // if (Input.GetKeyDown(KeyCode.Space))
+            // {
+            //     foreach (var ai in aiManager.AIControllers)
+            //     {
+            //       
+            //     }
+            // }
 
-            //Spawn in click pos
-            if (Input.GetMouseButtonDown(1))
-            {
-                var clickPos = GetMouseClickPoint();
-                
-                aiManager.SpawnRandomAI(clickPos);
-            }
+            // //Move Click Point
+            // if (Input.GetMouseButtonDown(0))
+            // {
+            //     var clickPos = GetMouseClickPoint();
+            //     CreatedDebugPoint(clickPos);
+            //     OnMouseClick?.Invoke(clickPos);
+            // }
+            //
+            // //Spawn in click pos
+            // if (Input.GetMouseButtonDown(1))
+            // {
+            //     var aiManager = starter.ModulesContainer.GetManager<AIManager>();
+            //
+            //     var clickPos = GetMouseClickPoint();
+            //
+            //     var aiController = aiManager.SpawnRandomAI(clickPos);
+            //     var newDebugAi = new NeuroAIController();
+            //     newDebugAi.Start(aiController);
+            // }
             
             //Spawn Item
-            if (Input.GetKey(KeyCode.LeftControl))
+            if (Input.GetKeyDown(KeyCode.I))
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    var clickPos = GetMouseClickPoint();
-                    var itemsManager = starter.ModulesContainer.GetManager<ItemsManager>();
-                    itemsManager.CreateItemInstance(spawnedItem, clickPos);
-                }
+                var itemsManager = starter.ModulesContainer.GetManager<ItemsManager>();
+                itemsManager.CreateItemInRandomPoint(itemsManager.GetRandomItemConfig());
             }
         }
 

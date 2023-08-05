@@ -11,7 +11,7 @@ namespace Test.AI
     public class AIPresetConfig : MultitonScriptableObjectsByName<AIPresetConfig>
     {
         [Header("Main Settings")] 
-        public Material mainMaterial;
+        public Color color;
         
         [Header("Move Settings")]
         public float moveSpeed = 3.5f;

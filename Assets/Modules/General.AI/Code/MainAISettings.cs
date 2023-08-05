@@ -10,6 +10,8 @@ namespace Test.AI
         order = 10)]
     public class MainAISettings : SingletonScriptableObject<MainAISettings>
     {
+        public Material aiMaterial;
+        
         public AIBehaviour aiPrefab;
 
         public List<AIPresetConfig> presetSpawnList;

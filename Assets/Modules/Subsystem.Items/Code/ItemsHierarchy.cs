@@ -6,9 +6,9 @@ namespace Test.Items
     public class ItemsHierarchy : MonoBehaviour
     {
         [SerializeField] private Transform itemsContainer;
-        [SerializeField] private List<ItemSpawnPoint> itemSpawnPoints;
+        [SerializeField] private List<ItemSpawnPointBehaviour> itemSpawnPoints;
 
         public Transform ItemsContainer => itemsContainer;
-        public List<ItemSpawnPoint> ItemSpawnPoints => itemSpawnPoints;
+        public List<ItemSpawnPointBehaviour> ItemSpawnPoints => itemSpawnPoints;
     }
 }

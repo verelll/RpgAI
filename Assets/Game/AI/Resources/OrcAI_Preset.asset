@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0dd243c439e40dbb4d3ee71fa634dc1, type: 3}
   m_Name: OrcAI_Preset
   m_EditorClassIdentifier: 
-  mainMaterial: {fileID: 2100000, guid: 6fbf4798877974a4383e3b7510a94c6c, type: 2}
+  color: {r: 1, g: 0, b: 0, a: 1}
   moveSpeed: 10
   angularSpeed: 250
   acceleration: 14

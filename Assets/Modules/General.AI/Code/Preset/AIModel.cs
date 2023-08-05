@@ -1,7 +1,4 @@
 ﻿namespace Test.AI
 {
-    public class AIModel
-    {
-        
-    }
+    public class AIModel { }
 }

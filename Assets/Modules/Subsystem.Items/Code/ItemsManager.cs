@@ -1,46 +1,63 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Test.Architecture;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Test.Items
 {
-    public class ItemsManager : ManagerBase
+    public sealed class ItemsManager : ManagerBase
     {
-        private List<ItemInstance> _items;
+        private Dictionary<string, ItemInstance> _items;
 
-        private ItemsHierarchy _itemsHierarchy;
+        public ItemsHierarchy ItemsHierarchy { get; private set; }
         
-        public override void InitDependencyManagers() { }
-
+        public event Action<ItemInstance> OnItemInstanceCreated;
+        public event Action<ItemInstance> OnItemInstanceDestroyed;
+        
+        public event Action<IItemView> OnItemViewCreated;
+        public event Action<IItemView> OnItemViewPreDestroyed;
+        
+        public event Action<ItemInstance, GameObject> OnItemUsed;
+        
         public override void Init()
         {
-            _items = new List<ItemInstance>();
-            _itemsHierarchy = GameObject.FindObjectOfType<ItemsHierarchy>();
+            _items = new Dictionary<string, ItemInstance>();
+            ItemsHierarchy = GameObject.FindObjectOfType<ItemsHierarchy>();
             
             ItemConfig.Init();
         }
-
-        public override void Dispose()
-        {
-            
-        }
+        
 
 #region Spawn Item
 
         public ItemInstance CreateItemInRandomPoint(ItemConfig config)
         {
             var spawnTransform = GetRandomSpawnPoint();
+            if (spawnTransform == null)
+                return default;
+            
             var item = CreateItemInstance(config, spawnTransform.SpawnPointTransform.position);
-            spawnTransform.SpawnedItem = item.Behaviour;
+            spawnTransform.SpawnedItem = item.View;
             return item;
         }
 
-        private ItemSpawnPoint GetRandomSpawnPoint()
+        private ItemSpawnPointBehaviour GetRandomSpawnPoint()
         {
-            var spawnPoints = _itemsHierarchy.ItemSpawnPoints.Where(p => p.IsEmpty).ToList();
+            var spawnPoints = ItemsHierarchy.ItemSpawnPoints.Where(p => p.IsEmpty).ToList();
+            if (spawnPoints.Count == 0)
+                return default;
+            
             var randomIndex = Random.Range(0, spawnPoints.Count);
             return spawnPoints[randomIndex];
+        }
+        
+        public ItemConfig GetRandomItemConfig()
+        {
+            var items = ItemConfig.Objects;
+            var randomIndex = Random.Range(0, items.Count);
+            return items[randomIndex];
         }
 
 #endregion
@@ -50,59 +67,140 @@ namespace Test.Items
 
         public ItemInstance CreateItemInstance(ItemConfig config, Vector3 position)
         {
-            var itemInstance = new ItemInstance(config);
+            var generatedID = GenerateItemID(config);
+            var itemInstance = new ItemInstance(config, generatedID);
 
-            var behaviour = CreateItemBehaviour(config, position, _itemsHierarchy.ItemsContainer);
-            behaviour.InitBehaviour(itemInstance);
-            
-            itemInstance.SetBehaviour(behaviour);
+            CreateItemView(
+                itemInstance, 
+                position  + config.spawnPositionOffset,
+                Quaternion.Euler(config.spawnRotationOffset),
+                ItemsHierarchy.ItemsContainer);
             itemInstance.Init();
             
-            _items.Add(itemInstance);
+            _items.Add(generatedID, itemInstance);
+            OnItemInstanceCreated?.Invoke(itemInstance);
             return itemInstance;
         }
 
-        public ItemBehaviour CreateItemBehaviour(ItemConfig config, Vector3 position, Transform parent)
+        public ItemView CreateItemView(
+            ItemInstance itemInstance,
+            Vector3 position,
+            Quaternion rotation,
+            Transform parent = null)
         {
-            var createdBehaviour = GameObject.Instantiate(
-                config.itemPrefab, 
-                position + config.spawnPositionOffset, 
-                Quaternion.Euler(config.spawnRotationOffset),
-                parent);
+            var prefab = itemInstance.Config.itemPrefab;
+            var curParent = parent == null 
+                ? ItemsHierarchy.ItemsContainer 
+                : parent;
             
-            return createdBehaviour;
+            var createdView = CreateItemView(
+                itemInstance,
+                prefab,
+                position,
+                rotation,
+                curParent,
+                itemInstance.ID);
+
+            return createdView;
         }
 
-#endregion
+        public ItemEquippedView CreateItemEquippedView(
+            ItemInstance itemInstance,
+            Vector3 position,
+            Quaternion rotation,
+            Transform parent)
+        {
+            var prefab = itemInstance.Config.itemEquippedPrefab;
+            var createdView = CreateItemView(
+                itemInstance,
+                prefab,
+                position,
+                rotation,
+                parent,
+                itemInstance.ID);
+            
+            return createdView;
+        }
+
+        private T CreateItemView<T>(
+            ItemInstance itemInstance,
+            T prefab,
+            Vector3 position,
+            Quaternion rotation,
+            Transform parent,
+            string named)
+            where T : MonoBehaviour, IItemView
+        {
+            var createdView = GameObject.Instantiate(prefab, position, rotation, parent);
+            
+            itemInstance.SetView(createdView);
+            createdView.InitView(itemInstance);
+            createdView.name = named;
+            OnItemViewCreated?.Invoke(createdView);
+            return createdView;
+        }
+
+        #endregion
+
 
 #region Delete Item
 
-        public void DestroyItemInstance(ItemInstance itemInstance)
+        public void DestroyItemInstance(string itemID)
         {
-            DestroyItemBehaviour(itemInstance);
+            var itemInstance = GetByID(itemID);
+            if(itemInstance == null)
+                return;
+            
+            DestroyItemView(itemInstance);
+            OnItemInstanceDestroyed?.Invoke(itemInstance);
             itemInstance.Dispose();
-            _items.Remove(itemInstance);
+            _items.Remove(itemID);
         }
 
-        public void DestroyItemBehaviour(ItemInstance itemInstance)
+        public void DestroyItemView(ItemInstance itemInstance)
         {
-            if (itemInstance.Behaviour == null)
+            if (itemInstance.View == null)
             {
-                Debug.Log($"[ItemsManager] Item: {itemInstance.Config.name}. Behaviour already deleted!");
+                Debug.Log($"[ItemsManager] Item: {itemInstance.ID}. Behaviour already deleted!");
                 return;
             }
             
-            itemInstance.Behaviour.DisposeBehaviour(HandleDisposed);
+            OnItemViewPreDestroyed?.Invoke(itemInstance.View);
+            itemInstance.View?.DisposeView();
+            itemInstance.SetView(null);
 
-            void HandleDisposed()
+            GameObject.Destroy((MonoBehaviour) itemInstance.View);
+        }
+        
+#endregion
+
+
+#region Get Items
+
+        public ItemInstance GetByID(string itemID)
+        {
+            if (!_items.TryGetValue(itemID, out var itemInstance))
             {
-                GameObject.Destroy(itemInstance.Behaviour.gameObject);
-                itemInstance.SetBehaviour(null);
+                Debug.Log($"[ItemsManager] Item with id: {itemID} not found!");
+                return default;
             }
+
+            return itemInstance;
         }
 
 #endregion
 
+
+#region ID Generator
+
+        private int curGeneratedIndex = 0;
+        private string GenerateItemID(ItemConfig itemConfig)
+        {
+            var newId = $"{itemConfig.name} ID:{++curGeneratedIndex}";
+            return newId;
+        }
+
+#endregion
 
     }
 }

@@ -1,44 +1,42 @@
 ﻿using System.Collections.Generic;
+using Test.AI.States;
+using Test.AI.Triggers;
 using Test.Architecture;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace Test.AI
 {
     public class AIManager : ManagerBase
     {
-        private List<AIController> _aiList;
-
-        public List<AIController> AIControllers => _aiList;
+        public  IReadOnlyDictionary<string, AIController> AIControllers => _aiList;
+        private Dictionary<string, AIController> _aiList;
 
         private AIHierarchy _aiHierarchy;
         private MainAISettings _settings;
-
-        public override void InitDependencyManagers()
-        {
-            
-        }
-
+        
         public override void Init()
         {
             AIPresetConfig.Init();
 
-            _aiList = new List<AIController>();
+            _aiList = new Dictionary<string, AIController>();
             
             _aiHierarchy = GameObject.FindObjectOfType<AIHierarchy>();
             _settings = MainAISettings.Instance;
         }
 
-        public override void Dispose()
+        public AIController GetByID(string id)
         {
-            
+            if (!_aiList.TryGetValue(id, out var value))
+                return default;
+
+            return value;
         }
 
-        public void SpawnRandomAI(Vector3 position)
+        public AIController SpawnRandomAI(Vector3 position)
         {
             var randomIndex = Random.Range(0, _settings.presetSpawnList.Count);
             var randomPreset = _settings.presetSpawnList[randomIndex];
-            CreateAI(randomPreset, position);
+            return CreateAI(randomPreset, position);
         }
 
         public AIController CreateAI(AIPresetConfig presetConfig)
@@ -69,17 +67,27 @@ namespace Test.AI
                     curPos,
                     curRot);
 
-            behaviour.gameObject.name = presetConfig.ID;
+            var id = GenerateAIName(presetConfig.ID);
+            behaviour.gameObject.name = id;
+
+            var controller = new AIController(id, model, behaviour, presetConfig, _settings.aiMaterial);
+            MContainer.Inject(controller);
+            _aiList.Add(id, controller);
             
-            var controller = new AIController(model, behaviour, presetConfig);
-            _aiList.Add(controller);
+            CreateInternalController(controller);
             return controller;
+        }
+
+        //Переписать потом
+        private void CreateInternalController(AIController controller)
+        {
+            controller.AddInternalController(new AIStatesInternalController(controller));
+            controller.AddInternalController(new AITriggerInternalController(controller));
         }
 
         private AIModel CreateAIModel()
         {
-            var newModel = new AIModel();
-            return newModel;
+            return new AIModel();
         }
         
         private AIBehaviour CreateAIBehaviour(AIBehaviour prefab, Vector3 position, Quaternion rotation)
@@ -96,6 +104,13 @@ namespace Test.AI
             var spawnPoints =_aiHierarchy.SpawnPoints;
             var randomIndex = Random.Range(0, spawnPoints.Count);
             return spawnPoints[randomIndex];
+        }
+
+        private int curIndex = 0;
+        private string GenerateAIName(string configName)
+        {
+             var newName = $"{configName} ID:{++curIndex}";
+             return newName;
         }
     }
 }

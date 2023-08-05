@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using Test.States;
+using Test.Architecture;
 using UnityEngine;
 
 namespace Test.AI
 {
-    public class AIController: IStateController
+    public sealed class AIController : Injector, IAIControllerData
     {
-        public AIModel Model { get; }
-        public AIBehaviour Behaviour { get; }
-        public AIPresetConfig Config { get; }
-
-        public Dictionary<Type, BaseAIState> AllStates { get; }
+        public string ID { get; }
         
-        public BaseAIState ActiveState { get; private set; }
-        
-        public AIController(AIModel model, AIBehaviour behaviour, AIPresetConfig config)
+        public AIController(
+            string id, 
+            AIModel model, 
+            AIBehaviour behaviour,
+            AIPresetConfig config, 
+            Material material)
         {
+            ID = id;
             Model = model;
             Behaviour = behaviour;
             Config = config;
 
             //Set material
-            behaviour.SetMaterial(config.mainMaterial);
+            var mat = new Material(material)
+            {
+                color = config.color
+            };
+            behaviour.SetMaterial(mat);
             
             //Set params
             var agent = Behaviour.Agent;
@@ -30,70 +34,59 @@ namespace Test.AI
             agent.angularSpeed = Config.angularSpeed;
             agent.acceleration = Config.acceleration;
             agent.stoppingDistance = Config.stoppingDistance;
-
-            AllStates = new Dictionary<Type, BaseAIState>();
-        }
-
-        public T AddState<T>(bool initState) where T : BaseAIState, new()
-        {
-            var state = GetState<T>();
-            if (state != null)
-                return state;
             
-            var newState = new T();
-            var type = newState.GetType();
-
-            if(initState)
-                newState.Init(this);
-            
-            AllStates[type] = newState;
-            return newState;
+            // foreach (var con in internalControllers)
+            //     AddInternalController(con);
         }
 
-        public void RemoveState<T>() where T : BaseAIState
-        {
-            var state = GetState<T>();
-            state?.Dispose();
-        }
+#region IAIControllerData
 
-        public void RemoveAllStates()
-        {
-            foreach (var pair in AllStates)
-                pair.Value.Dispose();
-            
-            AllStates.Clear();
-        }
+        public AIModel Model { get; }
+        public AIBehaviour Behaviour { get; }
+        public AIPresetConfig Config { get; }
 
-        public T GetState<T>() where T : BaseAIState
+#endregion
+        
+
+#region Internal Controllers
+
+        private Dictionary<Type, BaseAIInternalController> _internalControllers;
+        
+        public T GetInternalController<T>() where T : BaseAIInternalController
         {
             var type = typeof(T);
-            if (!AllStates.TryGetValue(type, out var state))
+            if (!_internalControllers.TryGetValue(type, out var internalController))
                 return default;
 
-            return state as T;
+            return (T) internalController;
         }
 
-        public void ActivateState<T>(Action callback = null) where T : BaseAIState
+        public void AddInternalController(BaseAIInternalController controller)
         {
-            ActiveState?.EndState();
+            _internalControllers ??= new Dictionary<Type, BaseAIInternalController>();
+            var type = controller?.GetType();
+            
+            if(_internalControllers.ContainsKey(type))
+               return;
 
-            var state = GetState<T>();
-            if(state == null)
-            {
-                Debug.Log("[AIController] State not added!");
-                callback?.Invoke();
-                return;
-            }
-
-            ActiveState = state;
-            state.OnStateEnd += HandleStateEnd;
-
-            void HandleStateEnd()
-            {
-                state.OnStateEnd -= HandleStateEnd;
-                callback?.Invoke();
-                ActiveState = null;
-            }
+            MContainer.Inject(controller);
+            controller?.InitController();
+            _internalControllers[type] = controller;
         }
+
+        public void RemoveInternalController(BaseAIInternalController controller)
+        {
+            var type = controller?.GetType();
+            
+            if(!_internalControllers.ContainsKey(type))
+               return;
+
+            var con = _internalControllers[type];
+            con.DisposeController();
+            _internalControllers.Remove(type);
+        }
+        
+#endregion
+
     }
 }

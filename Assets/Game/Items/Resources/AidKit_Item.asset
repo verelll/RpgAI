@@ -15,5 +15,9 @@ MonoBehaviour:
   itemType: 50
   itemPrefab: {fileID: 36234410238091391, guid: a60d1888bfc3c19488d1cbda081f11d7,
     type: 3}
+  itemEquippedPrefab: {fileID: -7082621373794286362, guid: 725d2597a0177f748821d97cd29800ab,
+    type: 3}
   spawnPositionOffset: {x: 0, y: 1, z: 0}
   spawnRotationOffset: {x: 0, y: 0, z: 0}
+  equipPositionOffset: {x: 0, y: 0, z: 0}
+  equipRotationOffset: {x: 0, y: 0, z: 0}

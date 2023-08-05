@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using Test.LocationView;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Test.AI
 {
-    public class AIBehaviour : MonoBehaviour
+    public class AIBehaviour : MonoBehaviour, ILocationViewObject
     {
         [Header("Main Settings")]
         [SerializeField]
@@ -22,5 +24,18 @@ namespace Test.AI
         {
             meshRenderer.material = material;
         }
+
+        private void OnDestroy()
+        {
+            OnDestroyed?.Invoke(this);
+        }
+
+#region ILocationView
+
+        public GameObject GetView => this.gameObject;
+        public event Action<ILocationViewObject> OnDestroyed;
+
+#endregion
+
     }
 }
