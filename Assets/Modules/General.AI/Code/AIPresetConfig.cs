@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Test.Architecture;
+﻿using Test.Architecture;
 using UnityEngine;
 
 namespace Test.AI
