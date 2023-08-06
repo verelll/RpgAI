@@ -1,4 +1,6 @@
-﻿using Test.Architecture;
+﻿using Test.AI.States;
+using Test.Architecture;
+using Test.FSM;
 using UnityEngine;
 
 namespace Test.AI
@@ -10,6 +12,8 @@ namespace Test.AI
         public AIModel Model { get; }
         public AIView View { get; }
         public AIPresetConfig Config { get; }
+
+        private FSM<string> _aiFSM;
 
         public AIController(
             string id, 
@@ -36,11 +40,17 @@ namespace Test.AI
             agent.angularSpeed = Config.angularSpeed;
             agent.acceleration = Config.acceleration;
             agent.stoppingDistance = Config.stoppingDistance;
+
+            _aiFSM = new FSM<string>();
         }
 
         public void Init()
         {
-            
+            foreach (var stateSettings in Config.States)
+            {
+                var state = stateSettings.CreateBehaviour(this);
+                _aiFSM.AddState(state);
+            }
         }
 
         public void Dispose()

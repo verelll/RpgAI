@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -8,7 +9,7 @@ using UnityEditor;
 
 namespace Test.Architecture
 {
-	public abstract class MultitonScriptableObjects<T> : ScriptableObject where T : MultitonScriptableObjects<T>
+	public abstract class MultitonScriptableObjects<T> : SerializedScriptableObject where T : MultitonScriptableObjects<T>
 	{
 		
 		public static List<T> Objects { get; private set; }

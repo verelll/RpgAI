@@ -1,24 +1,27 @@
-﻿using Test.Architecture;
+﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
+using Test.AI.States;
+using Test.Architecture;
 using UnityEngine;
 
 namespace Test.AI
 {
     [CreateAssetMenu(
-        fileName = "AIPresetConfig", 
-        menuName = "AI/AIPresetConfig", 
+        fileName = "AIPresetConfig",
+        menuName = "AI/AIPresetConfig",
         order = 10)]
     public class AIPresetConfig : MultitonScriptableObjectsByName<AIPresetConfig>
     {
-        [Header("Main Settings")] 
-        public Color color;
+        [BoxGroup("Main Settings")] public Color color;
         
-        [Header("Move Settings")]
-        public float moveSpeed = 3.5f;
-        public float angularSpeed = 120;
-        public float acceleration = 8;
-        public float stoppingDistance = 0;
-        
-        
+        [BoxGroup("Move Settings")] public float moveSpeed = 3.5f;
+        [BoxGroup("Move Settings")] public float angularSpeed = 120;
+        [BoxGroup("Move Settings")] public float acceleration = 8;
+        [BoxGroup("Move Settings")] public float stoppingDistance = 0;
+
+        [BoxGroup("States Settings"), SerializeField] private List<BaseAIStateSettings> states = new();
+
         public string ID => name;
+        public IEnumerable<BaseAIStateSettings> States => states;
     }
 }
