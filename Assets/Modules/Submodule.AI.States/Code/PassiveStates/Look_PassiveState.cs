@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Test.AI.States
 {
-    public class Look_PassiveState : BaseAIState
+    public class Look_PassiveState //: BaseAIState
     {
         public List<ILocationViewObject> ObjectsInSeeRange { get; private set; }
 
@@ -17,19 +17,19 @@ namespace Test.AI.States
 
         private LookPassiveStateSettings _settings;
 
-        public override void Init()
+        public void Init()
         {
             _settings = LookPassiveStateSettings.Instance;
             ObjectsInSeeRange = new List<ILocationViewObject>();
             
             _lookPassiveStateBehaviour = GameObject.Instantiate(_settings.lookStatePrefab);
-            _lookPassiveStateBehaviour.transform.SetParent(DataController.Behaviour.transform, false);
+           // _lookPassiveStateBehaviour.transform.SetParent(DataController.Behaviour.transform, false);
 
             _lookPassiveStateBehaviour.OnObjectEnter += HandleObjectEnter;
             _lookPassiveStateBehaviour.OnObjectExit += HandleObjectExit;
         }
 
-        public override void Dispose()
+        public void Dispose()
         {
             _lookPassiveStateBehaviour.OnObjectEnter -= HandleObjectEnter;
             _lookPassiveStateBehaviour.OnObjectExit -= HandleObjectExit;

@@ -5,12 +5,10 @@ namespace Test.Architecture
 {
     public class ModulesContainer 
     {
-        private Dictionary<Type, ManagerBase> _managers;
+        private Dictionary<Type, ManagerBase> _managers = new ();
         
         public void InitManagers()
         {
-            _managers ??= new Dictionary<Type, ManagerBase>();
-            
             foreach (var pair in _managers)
             {
                 Inject(pair.Value);

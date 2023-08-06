@@ -12,7 +12,7 @@ namespace Test.AI
     {
         public Material aiMaterial;
         
-        public AIBehaviour aiPrefab;
+        public AIView aiPrefab;
 
         public List<AIPresetConfig> presetSpawnList;
     }

@@ -3,7 +3,7 @@
     public interface IAIControllerData
     {
         public AIModel Model { get; }
-        public AIBehaviour Behaviour { get; }
+        public AIView View { get; }
         public AIPresetConfig Config { get; }
     }
 }

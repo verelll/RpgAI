@@ -1,6 +1,5 @@
 ﻿using System;
 using Test.AI;
-using Test.AI.Neuro;
 using Test.Items;
 using UnityEngine;
 
@@ -35,16 +34,14 @@ namespace Test.Game
             // }
             //
             // //Spawn in click pos
-            // if (Input.GetMouseButtonDown(1))
-            // {
-            //     var aiManager = starter.ModulesContainer.GetManager<AIManager>();
-            //
-            //     var clickPos = GetMouseClickPoint();
-            //
-            //     var aiController = aiManager.SpawnRandomAI(clickPos);
-            //     var newDebugAi = new NeuroAIController();
-            //     newDebugAi.Start(aiController);
-            // }
+            if (Input.GetMouseButtonDown(1))
+            {
+                var aiManager = starter.ModulesContainer.GetManager<AIManager>();
+            
+                var clickPos = GetMouseClickPoint();
+            
+                var aiController = aiManager.SpawnRandomAI(clickPos);
+            }
             
             //Spawn Item
             if (Input.GetKeyDown(KeyCode.I))

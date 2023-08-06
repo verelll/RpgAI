@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Test.AI.States;
-using Test.AI.Triggers;
 using Test.Architecture;
 using UnityEngine;
 
@@ -41,15 +39,17 @@ namespace Test.AI
 
         public AIController CreateAI(AIPresetConfig presetConfig)
         {
-            return CreateAI(presetConfig, Vector3.zero, Quaternion.identity);
+            return CreateAIController(presetConfig, Vector3.zero, Quaternion.identity);
         }
         
         public AIController CreateAI(AIPresetConfig presetConfig, Vector3 position)
         {
-            return CreateAI(presetConfig, position, Quaternion.identity);
+            return CreateAIController(presetConfig, position, Quaternion.identity);
         }
 
-        private AIController CreateAI(AIPresetConfig presetConfig, Vector3 position, Quaternion rotation)
+#region Controller
+
+        private AIController CreateAIController(AIPresetConfig presetConfig, Vector3 position, Quaternion rotation)
         {
             var curPos = position;
             var curRot = rotation;
@@ -62,35 +62,51 @@ namespace Test.AI
             }
             
             var model = CreateAIModel();
-            var behaviour = CreateAIBehaviour(
-                    _settings.aiPrefab,
-                    curPos,
-                    curRot);
+            var view = CreateAIView(
+                _settings.aiPrefab,
+                curPos,
+                curRot);
 
             var id = GenerateAIName(presetConfig.ID);
-            behaviour.gameObject.name = id;
+            view.gameObject.name = id;
 
-            var controller = new AIController(id, model, behaviour, presetConfig, _settings.aiMaterial);
+            var controller = new AIController(id, model, view, presetConfig, _settings.aiMaterial);
             MContainer.Inject(controller);
             _aiList.Add(id, controller);
-            
-            CreateInternalController(controller);
+            controller.Init();
             return controller;
         }
-
-        //Переписать потом
-        private void CreateInternalController(AIController controller)
+        
+        public void DestroyAIController(AIController controller)
         {
-            controller.AddInternalController(new AIStatesInternalController(controller));
-            controller.AddInternalController(new AITriggerInternalController(controller));
+            if(controller == null)
+                return;
+            
+            if(!_aiList.ContainsKey(controller.ID))
+                return;
+            
+            DestroyAIView(controller.View, 1);
+            _aiList[controller.ID] = null;
+            controller.Dispose();
         }
+
+#endregion
+        
+
+#region Model
 
         private AIModel CreateAIModel()
         {
             return new AIModel();
         }
         
-        private AIBehaviour CreateAIBehaviour(AIBehaviour prefab, Vector3 position, Quaternion rotation)
+
+#endregion
+
+
+#region View
+
+        private AIView CreateAIView(AIView prefab, Vector3 position, Quaternion rotation)
         {
             return GameObject.Instantiate(
                 prefab,
@@ -98,6 +114,16 @@ namespace Test.AI
                 rotation,
                 _aiHierarchy.SpawnContainer);
         }
+                
+        public void DestroyAIView(AIView view, int destroyDelay)
+        {
+            if(view == null)
+                return;
+                    
+            GameObject.Destroy(view, destroyDelay);
+        }
+
+#endregion
 
         private Transform GetRandomSpawnPoint()
         {

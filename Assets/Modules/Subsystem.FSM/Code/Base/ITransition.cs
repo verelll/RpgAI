@@ -1,9 +1,9 @@
 ﻿namespace Test.FSM
 {
-    public interface ITransition<TStateID>
+    public interface ITransition<I>
     {
-        TStateID StartState { get; }
-        TStateID EndState   { get; }
+        I StartState { get; }
+        I EndState   { get; }
 
         bool CanTransit();
 

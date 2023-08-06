@@ -1,8 +1,8 @@
 ﻿namespace Test.FSM
 {
-    public interface IState<TStateID>
+    public interface IState<I>
     {
-        TStateID ID { get; }
+        I ID { get; }
         
         public  void Enter();
         public  void Update();

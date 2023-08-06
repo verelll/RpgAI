@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace Test.AI
 {
-    public class AIBehaviour : MonoBehaviour, ILocationViewObject
+    public class AIView : MonoBehaviour, ILocationViewObject
     {
         [Header("Main Settings")]
         [SerializeField]
@@ -13,10 +13,6 @@ namespace Test.AI
 
         [SerializeField] 
         private MeshRenderer meshRenderer;
-
-        [Header("Weapon Settings")] 
-        [SerializeField]
-        private Transform itemSlot;
 
         public NavMeshAgent Agent => navMeshAgent;
 
