@@ -12,14 +12,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0dd243c439e40dbb4d3ee71fa634dc1, type: 3}
   m_Name: CivilianAI_Preset
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: states
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[Test.AI.States.BaseAIStateSettings,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 1|Test.AI.States.AIIdleStateSettings, Assembly-CSharp
+    - Name: stateId
+      Entry: 1
+      Data: Idle
+    - Name: nextStateId
+      Entry: 1
+      Data: Patrol
+    - Name: waitTime
+      Entry: 7
+      Data: UnityEngine.Vector2Int, UnityEngine.CoreModule
+    - Name: 
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 3
+      Data: 11
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 2|Test.AI.States.AIPatrolStateSettings, Assembly-CSharp
+    - Name: stateId
+      Entry: 1
+      Data: Patrol
+    - Name: nextStateId
+      Entry: 1
+      Data: Idle
+    - Name: repeatPatrolsCount
+      Entry: 3
+      Data: 1
+    - Name: finishDistance
+      Entry: 4
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   color: {r: 0.086240634, g: 0.9622642, b: 0.18654391, a: 1}
   moveSpeed: 3.5
   angularSpeed: 120
   acceleration: 8
   stoppingDistance: 0
-  groupId: Imperia
-  friendlyGroups:
-  - Imperia
-  enemyGroups:
-  - Orc
-  canAttack: 0
+  startStateName: Idle

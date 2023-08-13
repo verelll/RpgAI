@@ -12,14 +12,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0dd243c439e40dbb4d3ee71fa634dc1, type: 3}
   m_Name: MilitaryAI_Preset
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: states
+      Entry: 7
+      Data: 0|System.Collections.Generic.List`1[[Test.AI.States.BaseAIStateSettings,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 1|Test.AI.States.AIPatrolStateSettings, Assembly-CSharp
+    - Name: stateId
+      Entry: 1
+      Data: Patrol
+    - Name: nextStateId
+      Entry: 1
+      Data: Patrol
+    - Name: repeatPatrolsCount
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   color: {r: 0.9339623, g: 0.6567998, b: 0.030838395, a: 1}
   moveSpeed: 4
   angularSpeed: 240
   acceleration: 12
   stoppingDistance: 0
-  groupId: Imperia
-  friendlyGroups:
-  - Imperia
-  enemyGroups:
-  - Orc
-  canAttack: 1
+  startStateName: Patrol

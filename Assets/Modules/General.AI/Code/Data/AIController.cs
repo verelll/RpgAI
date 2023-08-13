@@ -51,11 +51,21 @@ namespace Test.AI
                 var state = stateSettings.CreateBehaviour(this);
                 _aiFSM.AddState(state);
             }
-        }
 
+            var defaultState = Config.StartState;
+            _aiFSM.GoToState(defaultState);
+
+            UnityEventProvider.OnUpdate += Update;
+        }
+        
         public void Dispose()
         {
-            
+            UnityEventProvider.OnUpdate -= Update;
+        }
+
+        private void Update()
+        {
+            _aiFSM?.Update();
         }
     }
 }

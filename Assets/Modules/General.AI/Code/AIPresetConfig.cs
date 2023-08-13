@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Test.AI.States;
 using Test.Architecture;
@@ -19,9 +20,27 @@ namespace Test.AI
         [BoxGroup("Move Settings")] public float acceleration = 8;
         [BoxGroup("Move Settings")] public float stoppingDistance = 0;
 
-        [BoxGroup("States Settings"), SerializeField] private List<BaseAIStateSettings> states = new();
-
+        [BoxGroup, SerializeField, ValueDropdown("@GetStates(states)")] private string startStateName;
+        [PropertySpace(10)]
+        [BoxGroup, SerializeField] private List<BaseAIStateSettings> states = new();
+        
         public string ID => name;
+        public string StartState => startStateName;
         public IEnumerable<BaseAIStateSettings> States => states;
+
+        private IEnumerable GetStates(List<BaseAIStateSettings> states)
+        {
+            if (states == null)
+                return default;
+
+            var cachedIdList = new ValueDropdownList<string>();
+            cachedIdList.Add("", "");
+
+            foreach (var state in states)
+                cachedIdList.Add(state.ID, state.ID);
+
+            return cachedIdList;
+        }
     }
+
 }

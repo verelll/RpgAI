@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace Test.Architecture
 {
-    public static class ExtensionAI
+    public static class ExtensionNavMesh
     {
         public static IEnumerator MoveToPositionCoroutine(this NavMeshAgent agent, Vector3 targetPosition, float finishDistance, Action callback = null)
         {
