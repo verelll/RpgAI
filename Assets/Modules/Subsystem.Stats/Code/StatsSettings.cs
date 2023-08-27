@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using Test.Architecture;
 using UnityEngine;
 
-public class StatsSettings : MonoBehaviour
+namespace Test.Stats
 {
-    // Start is called before the first frame update
-    void Start()
+    [CreateAssetMenu(
+        fileName = "StatsSettings",
+        menuName = "Stats/Settings",
+        order = 10)]
+    public sealed class StatsSettings : SingletonScriptableObject<StatsSettings>
     {
+        [SerializeField]
+        private StatsViewGroup viewGroupPrefab;
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public StatsViewGroup GroupPrefab => viewGroupPrefab;
     }
 }

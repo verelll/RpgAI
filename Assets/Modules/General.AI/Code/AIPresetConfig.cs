@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using Test.AI.States;
 using Test.Architecture;
+using Test.Stats;
 using UnityEngine;
 
 namespace Test.AI
@@ -20,13 +21,19 @@ namespace Test.AI
         [BoxGroup("Move Settings")] public float acceleration = 8;
         [BoxGroup("Move Settings")] public float stoppingDistance = 0;
 
-        [BoxGroup, SerializeField, ValueDropdown("@GetStates(states)")] private string startStateName;
+        [BoxGroup("Stats Settings"), SerializeField] 
+        private StatsPresetConfig statsPresetConfig;
+        
+        [BoxGroup, SerializeField, ValueDropdown("@GetStates(states)")] 
+        private string startStateName;
+        
         [PropertySpace(10)]
         [BoxGroup, SerializeField] private List<BaseAIStateSettings> states = new();
         
         public string ID => name;
         public string StartState => startStateName;
         public IEnumerable<BaseAIStateSettings> States => states;
+        public StatsPresetConfig StatsConfig => statsPresetConfig;
 
         private IEnumerable GetStates(List<BaseAIStateSettings> states)
         {

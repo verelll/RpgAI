@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Test.AI
 {
-    public class AIManager : ManagerBase
+    public sealed class AIManager : ManagerBase
     {
         public  IReadOnlyDictionary<string, AIController> AIControllers => _aiList;
         private Dictionary<string, AIController> _aiList;

@@ -40,6 +40,9 @@ MonoBehaviour:
     - Name: repeatPatrolsCount
       Entry: 3
       Data: 1
+    - Name: finishDistance
+      Entry: 4
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -54,4 +57,5 @@ MonoBehaviour:
   angularSpeed: 240
   acceleration: 12
   stoppingDistance: 0
+  statsPresetConfig: {fileID: 11400000, guid: f26f07e137028d74ba5450023697b903, type: 2}
   startStateName: Patrol

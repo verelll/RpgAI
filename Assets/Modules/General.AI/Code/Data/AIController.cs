@@ -1,12 +1,15 @@
-﻿using Test.AI.States;
+﻿using System.Collections.Generic;
 using Test.Architecture;
 using Test.FSM;
+using Test.Stats;
 using UnityEngine;
 
 namespace Test.AI
 {
     public sealed class AIController : Injector, IAIControllerData
     {
+        private StatsManager _statsManager;
+        
         public string ID { get; }
         
         public AIModel Model { get; }
@@ -14,6 +17,7 @@ namespace Test.AI
         public AIPresetConfig Config { get; }
 
         private FSM<string> _aiFSM;
+        private Dictionary<StatType, GenericStatData> _aiStats;
 
         public AIController(
             string id, 
@@ -42,10 +46,18 @@ namespace Test.AI
             agent.stoppingDistance = Config.stoppingDistance;
 
             _aiFSM = new FSM<string>();
+            _aiStats = new Dictionary<StatType, GenericStatData>();
+        }
+
+        public override void InitDependencyManagers()
+        {
+            _statsManager = MContainer.GetManager<StatsManager>();
         }
 
         public void Init()
         {
+            _aiStats = _statsManager.CreateStatsDataWithView(Config.StatsConfig, View);
+            
             foreach (var stateSettings in Config.States)
             {
                 var state = stateSettings.CreateBehaviour(this);

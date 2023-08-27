@@ -11,7 +11,8 @@ namespace Test.Cameras
         private float _horizontal;
         private float _vertical;
         private float _mouseWheel;
-        
+
+        public Camera MainCamera => _cameraHierarchy.Cam;
         //private float _curZoom;
 
 #region Init

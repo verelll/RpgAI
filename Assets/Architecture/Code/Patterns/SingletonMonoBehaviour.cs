@@ -12,19 +12,13 @@ namespace Test.Architecture
 			{
 				if (_instance == null)
 				{
-					GameObject o = new GameObject("UnityEventProvider");
+					GameObject o = new GameObject(typeof(T).Name);
 					_instance = o.AddComponent<T>();
 					DontDestroyOnLoad(o);
-					_instance.Initialize();
 				}
 
 				return _instance;
 			}
-		}
-        
-		protected virtual void Initialize()
-		{
-			
 		}
 	}
 }

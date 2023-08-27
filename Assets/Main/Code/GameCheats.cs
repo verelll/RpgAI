@@ -1,5 +1,6 @@
 ﻿using System;
 using Test.AI;
+using Test.Architecture;
 using Test.Items;
 using UnityEngine;
 
@@ -7,9 +8,6 @@ namespace Test.Game
 {
     public class GameCheats : MonoBehaviour
     {
-        [SerializeField]
-        private GameStarter starter;
-
         [SerializeField, Header("Items Cheats")]
         private ItemConfig spawnedItem;
         
@@ -36,17 +34,17 @@ namespace Test.Game
             // //Spawn in click pos
             if (Input.GetMouseButtonDown(1))
             {
-                var aiManager = starter.ModulesContainer.GetManager<AIManager>();
+                var aiManager = GlobalModulesContainer.Instance.GetManager<AIManager>();
             
                 var clickPos = GetMouseClickPoint();
             
-                var aiController = aiManager.SpawnRandomAI(clickPos);
+                aiManager.SpawnRandomAI(clickPos);
             }
             
             //Spawn Item
             if (Input.GetKeyDown(KeyCode.I))
             {
-                var itemsManager = starter.ModulesContainer.GetManager<ItemsManager>();
+                var itemsManager =  GlobalModulesContainer.Instance.GetManager<ItemsManager>();
                 itemsManager.CreateItemInRandomPoint(itemsManager.GetRandomItemConfig());
             }
         }

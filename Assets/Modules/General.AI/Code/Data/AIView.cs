@@ -1,11 +1,13 @@
 ﻿using System;
 using Test.LocationView;
+using Test.Stats;
+using Test.UI;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Test.AI
 {
-    public class AIView : MonoBehaviour, ILocationViewObject
+    public class AIView : MonoBehaviour, ILocationViewObject, IStatProvider
     {
         [Header("Main Settings")]
         [SerializeField]
@@ -14,7 +16,12 @@ namespace Test.AI
         [SerializeField] 
         private MeshRenderer meshRenderer;
 
+        [SerializeField] 
+        private UIAnchor3D anchor;
+
         public NavMeshAgent Agent => navMeshAgent;
+
+        public UIAnchor3D Anchor => anchor;
 
         public void SetMaterial(Material material)
         {
@@ -33,5 +40,11 @@ namespace Test.AI
 
 #endregion
 
+
+#region IStatProvider
+
+        public UIAnchor3D ProviderAnchor => anchor;
+
+#endregion
     }
 }

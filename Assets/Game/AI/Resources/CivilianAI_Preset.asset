@@ -81,4 +81,5 @@ MonoBehaviour:
   angularSpeed: 120
   acceleration: 8
   stoppingDistance: 0
+  statsPresetConfig: {fileID: 11400000, guid: f26f07e137028d74ba5450023697b903, type: 2}
   startStateName: Idle
