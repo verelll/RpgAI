@@ -23,21 +23,16 @@ namespace Test.AI
             string id, 
             AIModel model, 
             AIView view,
-            AIPresetConfig config, 
-            Material material)
+            AIPresetConfig config)
         {
             ID = id;
             Model = model;
             View = view;
             Config = config;
 
-            //Set material
-            var mat = new Material(material)
-            {
-                color = config.color
-            };
-            view.SetMaterial(mat);
-            
+            //Set colors
+            View.EffectsComponent.Init(Config.LiquidColor, Config.SurfaceColor, Config.FresnelColor);
+
             //Set params
             var agent = View.Agent;
             agent.speed = Config.moveSpeed;

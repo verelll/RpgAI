@@ -43,8 +43,8 @@ namespace Test.Stats
         public BaseStatData(I id, float defaultValue, float defaultMaxValue, StatDataSettings dataSettings)
         {
             Id = id;
-            _amount = defaultValue;
-            _maxAmount = defaultMaxValue;
+            Amount = defaultValue;
+            MaxAmount = defaultMaxValue;
             DataSettings = dataSettings;
         }
     }

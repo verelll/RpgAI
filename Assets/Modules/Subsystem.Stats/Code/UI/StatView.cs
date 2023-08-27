@@ -39,8 +39,9 @@ namespace Test.Stats
             _backgroundSliderImage.color = _data.DataSettings.BackFillColor;
 
             _valueSlider.minValue = 0;
-            _valueSlider.value = _data.Amount;
             _valueSlider.maxValue = _data.MaxAmount;
+
+            _valueSlider.value = _data.Amount;
         }
         
         private void HandleValueChanged(float fromValue, float toValue)
@@ -51,6 +52,7 @@ namespace Test.Stats
         private void HandleMaxValueChanged(float fromValue, float toValue)
         {
             _valueSlider.maxValue = _data.MaxAmount;
+            HandleValueChanged(0, 0);
         }
     }
 }

@@ -52,7 +52,9 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  color: {r: 1, g: 0, b: 0, a: 1}
+  liquidColor: {r: 0.9622642, g: 0.19517623, b: 0.19517623, a: 0}
+  surfaceColor: {r: 0.5849056, g: 0.0082769515, b: 0.0082769515, a: 0}
+  fresnelColor: {r: 8, g: 0, b: 0, a: 0}
   moveSpeed: 10
   angularSpeed: 250
   acceleration: 14

@@ -1,4 +1,5 @@
 ﻿using System;
+using Test.Effects;
 using Test.LocationView;
 using Test.Stats;
 using Test.UI;
@@ -14,19 +15,16 @@ namespace Test.AI
         private NavMeshAgent navMeshAgent;
 
         [SerializeField] 
-        private MeshRenderer meshRenderer;
+        private BottleEffects effectsComponent;
 
         [SerializeField] 
         private UIAnchor3D anchor;
 
+        public BottleEffects EffectsComponent => effectsComponent;
+        
         public NavMeshAgent Agent => navMeshAgent;
 
         public UIAnchor3D Anchor => anchor;
-
-        public void SetMaterial(Material material)
-        {
-            meshRenderer.material = material;
-        }
 
         private void OnDestroy()
         {

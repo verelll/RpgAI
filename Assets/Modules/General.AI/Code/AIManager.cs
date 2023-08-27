@@ -70,7 +70,7 @@ namespace Test.AI
             var id = GenerateAIName(presetConfig.ID);
             view.gameObject.name = id;
 
-            var controller = new AIController(id, model, view, presetConfig, _settings.aiMaterial);
+            var controller = new AIController(id, model, view, presetConfig);
             MContainer.Inject(controller);
             _aiList.Add(id, controller);
             controller.Init();
