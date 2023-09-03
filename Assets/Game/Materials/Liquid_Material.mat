@@ -144,9 +144,9 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FrameColor: {r: 0, g: 0.33035365, b: 3.161299, a: 1}
     - _FresnelColor: {r: 0.031372547, g: 0.6258453, b: 8, a: 0}
-    - _LiquidColor: {r: 0.16353682, g: 0.35528168, b: 0.990566, a: 0}
+    - _LiquidColor: {r: 0.18178408, g: 0.985106, b: 0.02323363, a: 1}
     - _SideColor: {r: 0.14509805, g: 0.98039216, b: 0.67982835, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SurfaceColor: {r: 0.023893202, g: 0.043300554, b: 0.14472456, a: 0}
+    - _SurfaceColor: {r: 0.7735849, g: 0.018244924, b: 0.55988747, a: 0}
     - _TopColor: {r: 1, g: 0.043137252, b: 0.6345711, a: 1}
   m_BuildTextureStacks: []
