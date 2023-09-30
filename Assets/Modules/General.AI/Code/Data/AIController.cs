@@ -33,6 +33,8 @@ namespace Test.AI
             //Set colors
             View.EffectsComponent.Init(Config.LiquidColor, Config.SurfaceColor, Config.FresnelColor);
 
+            ApplyVfx();
+            
             //Set params
             var agent = View.Agent;
             agent.speed = Config.moveSpeed;
@@ -73,6 +75,13 @@ namespace Test.AI
         private void Update()
         {
             _aiFSM?.Update();
+        }
+
+        private const string BUBBLE_GRADIENT_NAME = "BubblesGradient";
+        
+        private void ApplyVfx()
+        {
+            View.Effect.SetGradient(BUBBLE_GRADIENT_NAME, Config.BubblesGradient);
         }
     }
 }

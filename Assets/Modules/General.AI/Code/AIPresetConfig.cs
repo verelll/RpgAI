@@ -17,6 +17,8 @@ namespace Test.AI
         [BoxGroup("View Settings"), SerializeField, ColorUsageAttribute(true, true)] private Color liquidColor;
         [BoxGroup("View Settings"), SerializeField, ColorUsageAttribute(true, true)] private Color surfaceColor;
         [BoxGroup("View Settings"), SerializeField, ColorUsageAttribute(true, true)] private Color fresnelColor;
+
+        [BoxGroup("VFX Settings"), SerializeField] private Gradient bubblesGradient;
         
         [BoxGroup("Move Settings")] public float moveSpeed = 3.5f;
         [BoxGroup("Move Settings")] public float angularSpeed = 120;
@@ -36,6 +38,8 @@ namespace Test.AI
         public Color LiquidColor => liquidColor;
         public Color SurfaceColor => surfaceColor;
         public Color FresnelColor => fresnelColor;
+
+        public Gradient BubblesGradient => bubblesGradient;
         
         public string StartState => startStateName;
         public IEnumerable<BaseAIStateSettings> States => states;

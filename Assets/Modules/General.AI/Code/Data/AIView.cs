@@ -5,6 +5,7 @@ using Test.Stats;
 using Test.UI;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VFX;
 
 namespace Test.AI
 {
@@ -20,11 +21,16 @@ namespace Test.AI
         [SerializeField] 
         private UIAnchor3D anchor;
 
+        [SerializeField] 
+        private VisualEffect effect;
+
         public BottleEffects EffectsComponent => effectsComponent;
         
         public NavMeshAgent Agent => navMeshAgent;
 
         public UIAnchor3D Anchor => anchor;
+
+        public VisualEffect Effect => effect;
 
         private void OnDestroy()
         {
